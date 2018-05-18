@@ -1,0 +1,201 @@
+<div class="">
+
+  <div class="container">
+    <div *ngIf="!isEdit">
+      <h1>FormCreate</h1>
+      <hr>
+      <form #f="ngForm" (ngSubmit)="onClickSubmit(f)">
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <!-- ------------------FormCreate----------------------------------- -->
+              <div class="form-group">
+                <b>FirstName</b>
+                <input type="text" [(ngModel)]="student.firstname" class="form-control" name="firstName" id="firstName" placeholder="FirstName">
+              </div>
+
+              <div class="form-group">
+                <b>LastName</b>
+                <input type="text" [(ngModel)]="student.lastname" class="form-control" name="lastName" id="lastName" placeholder="LastName">
+              </div>
+
+              <div class="form-group">
+                <b>TelephoneNumber</b>
+                <input type="tel" [(ngModel)]="student.tel" class="form-control" name="email" id="tel" placeholder="TelephoneNumber">
+              </div>
+
+              <div class="form-group">
+                <b>Scense</b>
+                <input type="text" [(ngModel)]="student.course" class="form-control" name="course" id="course" placeholder="Scense">
+              </div>
+
+              <div class="form-group">
+                <b>Position</b>
+                <button class="btn btn-primary" (click)="setCurrentPosition($event.preventDefault())"><i class="fas fa-location-arrow"></i>
+                  Get Current Location</button>
+                <input type="text" disabled [(ngModel)]="position.latitude" class="form-control" name="latitude" id="course" placeholder="latitude">
+                <input type="text" disabled [(ngModel)]="position.longitude" class="form-control" name="longitude" id="course" placeholder="longitude">
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="row">
+                <!-- -------------------UploadFile----------------------- -->
+                <div class="col-md-12">
+                  <div class="" style="height:50px">
+                    <label class="file-label">
+                      <input class="file-input" type="file" (change)="startUpload($event.target.files)">
+
+                      <span class="file-cta">
+                        <span class="file-icon">
+                          <i class="fa fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                          or เลือกไฟล์ภาพ
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                  <div *ngIf="percentage | async as pct">
+                    <progress class="progress is-info" [value]="pct" max="100">
+                    </progress>
+                    {{ pct | number }}%
+                  </div>
+                  <div *ngIf="(snapshot | async) as snap">
+                    {{ snap.bytesTransferred | fileSize }} of {{ snap.totalBytes | fileSize }}
+                    <div *ngIf="downloadURL | async as url">
+                      <h3>Results!</h3>
+                      <img [src]="url">
+                      <br>
+                      <a [href]="url" target="_blank" rel="noopener">Download Me!</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- -------------------Map--------------- -->
+                <div class="col-md-12">
+                  <agm-map [latitude]="position.latitude" [longitude]="position.longitude" [zoom]="position.zoom">
+                    <agm-marker [latitude]="position.latitude" [longitude]="position.longitude"></agm-marker>
+                  </agm-map>
+                  <li>latitude: {{position.latitude}}</li>
+                  <li>longitude: {{position.longitude}}</li>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------Submit------------------- -->
+          <div class="row">
+            <div class="col-md-12">
+              <button [disabled]="!isUploaded" type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                Submit</button>
+  
+  
+
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <!-- ------------------------Edit Form-------------------- -->
+    <div *ngIf="isEdit">
+      <h1>Edit Form</h1>
+      <hr>
+      <form #edit="ngForm" (ngSubmit)="onClickChange(edit)">
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <b>FirstName</b>
+                <input type="text" [(ngModel)]="student.firstname" class="form-control" name="firstName" id="firstName" placeholder="FirstName">
+              </div>
+
+              <div class="form-group">
+                <b>LastName</b>
+                <input type="text" [(ngModel)]="student.lastname" class="form-control" name="lastName" id="lastName" placeholder="LastName">
+              </div>
+
+              <div class="form-group">
+                <b>TelephoneNumber</b>
+                <input type="tel" [(ngModel)]="student.tel" class="form-control" name="email" id="tel" placeholder="TelephoneNumber">
+              </div>
+
+              <div class="form-group">
+                <b>Scense</b>
+                <input type="text" [(ngModel)]="student.course" class="form-control" name="course" id="course" placeholder="Scense">
+              </div>
+
+              <div class="form-group">
+                <b>Position</b>
+                <button class="btn btn-primary" (change)="setCurrentPosition()"><i class="fas fa-location-arrow"></i>
+                  Get Current Location</button>
+                <input type="text" disabled [(ngModel)]="position.latitude" class="form-control" name="latitude" id="course" placeholder="latitude">
+                <input type="text" disabled [(ngModel)]="position.longitude" class="form-control" name="longitude" id="course" placeholder="longitude">
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------Submit------------------- -->
+          <div class="row">
+            <div class="col-md-12">
+              <button [disabled]="!isUploaded " type="submit" class="btn btn-primary">Edit</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <!-- -----------------------Edit-end----------------- -->
+  </div>
+
+
+  <!-- --------Table---------------- -->
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>No#</th>
+        <th>Image</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>TelNumber</th>
+        <th>Scense</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Client-Time</th>
+        <th>Server-Time</th>
+        <th>File-Time</th>
+        <th>Payment</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items | async; let i = index;">
+        <td>{{ i +1 }}</td>
+        <td>
+          <img src="{{ item.payload.val().imageUrl}}" height="50px">
+        </td>
+        <td>{{ item.payload.val().firstname}}</td>
+        <td>{{item.payload.val().lastname}}</td>
+        <td>{{item.payload.val().tel}}</td>
+        <td>{{item.payload.val().course}}</td>
+        <td>{{item.payload.val().latitude}}</td>
+        <td>{{item.payload.val().longitude}}</td>
+        <td>{{item.payload.val().clienttime | date: 'dd/MM/yyyy - HH:mm'}}</td>
+        <td>{{item.payload.val().servertime | date: 'dd/MM/yyyy - HH:mm:ss:ms'}}</td>
+        <td>{{item.payload.val().timetotal}}</td>
+        <td>{{item.payload.val().payment }}</td>
+        <td style="text-align:center">Action</td>
+        <button (click)="onClickEdit(item)" class="btn btn-primary">EDIT</button>
+        <button (click)="onClickDelete(item)" class="btn btn-danger">DEL</button>
+        <button (click)="onClickPayment(item)" class="btn btn-success">Pay</button>
+      </tr>
+    </tbody>
+  </table>
+
+
+</div>

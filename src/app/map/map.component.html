@@ -1,0 +1,14 @@
+<div class="col-md-12"  *ngFor="let item of items | async">
+    <agm-map [latitude]="item.payload.val().latitude" [longitude]="item.payload.val().longitude" [zoom]="item.payload.val().zoom">
+      <agm-marker [latitude]="item.payload.val().latitude" [longitude]="item.payload.val().longitude"></agm-marker>
+    </agm-map>
+    <!-- <li>latitude: {{item.payload.val().latitude}}</li>
+    <li>longitude: {{item.payload.val().longitude}}</li> -->
+  </div>
+
+  <li *ngFor="let item of items | async" >
+      <td>{{ item.payload.val().latitude }}</td>
+  </li>
+  <button  type="submit" class="btn btn-primary" (click)="onClickSubmit()">Submit</button>
+  
+
